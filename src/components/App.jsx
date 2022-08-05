@@ -53,7 +53,23 @@ export class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
-  
+
+
+  componentDidMount() {
+    console.log('App ComponentDidMount');
+   const contacts = localStorage.getItem('contacts');
+    const parsedContact = JSON.parse(contacts);
+
+     if (parsedContact) {
+       this.setState({ contacts: parsedContact });
+     }
+  }
+  componentDidUpdate(_, prevState) {
+    console.log('App ComponentDidUpdate');
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
   render() {
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
